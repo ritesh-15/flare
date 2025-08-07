@@ -34,29 +34,17 @@ struct OnboardingCarouselScreen: View {
             .padding(.horizontal, 40)
             
             VStack(spacing: 20) {
-                Button {
+                FButton(action: {
                     router.navigate(to: .signup)
-                } label: {
-                    Text("Create an account")
-                        .frame(width: 300, height: 25)
-                        .foregroundStyle(Color.white)
-                        .padding()
-                        .background(Color.brandPrimary)
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
-                        .fontWeight(.bold)
-                }
+                }, text: "Create an account")
                 
                 HStack {
                     Text("Already have an account ?")
+                        .fontWeight(.light)
                     
-                    Button {
+                    FButton(action: {
                         router.navigate(to: .signin)
-                    } label: {
-                        Text("Sign In")
-                            .foregroundStyle(Color.brandPrimary)
-                            .fontWeight(.bold)
-                    }
-                    
+                    }, buttonType: .link, text: "Sign In")
                 }
             }
             .padding(.top, 42)
