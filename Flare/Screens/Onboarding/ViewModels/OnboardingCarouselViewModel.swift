@@ -1,10 +1,3 @@
-//
-//  OnboardingCarouselViewModel.swift
-//  Flare
-//
-//  Created by Ritesh Khore on 07/08/25.
-//
-
 import Foundation
 
 class OnboardingCarouselViewModel: ObservableObject {

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct OnboardingCarouselScreen: View {
     
+    @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel = OnboardingCarouselViewModel()
     
     var body: some View {
@@ -34,7 +35,7 @@ struct OnboardingCarouselScreen: View {
             
             VStack(spacing: 20) {
                 Button {
-                    
+                    router.navigate(to: .signup)
                 } label: {
                     Text("Create an account")
                         .frame(width: 300, height: 25)
@@ -49,7 +50,7 @@ struct OnboardingCarouselScreen: View {
                     Text("Already have an account ?")
                     
                     Button {
-                        
+                        router.navigate(to: .signin)
                     } label: {
                         Text("Sign In")
                             .foregroundStyle(Color.brandPrimary)
