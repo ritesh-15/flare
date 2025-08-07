@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct SignUpScreen: View {
+    
+    @EnvironmentObject private var router: Router
+    
     var body: some View {
         VStack {
             Image("logo")
@@ -18,7 +21,7 @@ struct SignUpScreen: View {
                 }, text: "Continue with email")
                 
                 FButton(action: {
-                    
+                    router.navigate(to: .mobileNumber)
                 }, buttonType: .secondary, text: "Use phone number")
                 .fontWeight(.bold)
                 

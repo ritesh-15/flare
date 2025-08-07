@@ -8,6 +8,7 @@ final class Router: ObservableObject {
         case carousel
         case signin
         case signup
+        case mobileNumber
     }
     
     @Published var navigationPath = NavigationPath()
