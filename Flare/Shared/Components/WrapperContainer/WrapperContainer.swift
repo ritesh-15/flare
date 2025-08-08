@@ -12,11 +12,12 @@ struct WrapperContainer<Content: View>: View {
                     TopNavBar()
                        
                 }
-
+                
                 content()
             }
             .padding(.horizontal, 32)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .scrollBounceBehavior(.basedOnSize)
     }
 }

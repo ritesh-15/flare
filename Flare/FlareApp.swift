@@ -16,6 +16,7 @@ struct FlareApp: App {
                         case .signup: SignUpScreen()
                         case .emailOrMobileAuthentication(let with): MobileOrEmailAuthenticationScreen(with: with)
                         case .otpInput: OtpInputScreen()
+                        case .profileDetails: ProfileDetailsScreen()
                         }
                     }
             }

@@ -56,8 +56,10 @@ struct OtpInputField: View {
                         
                         if !newValue.isEmpty {
                             if index == numberOfFields - 1 {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                     self.focusState = nil
+                                    // Navigate to profile details screen
+                                    router.navigate(to: .profileDetails)
                                 }
                             } else {
                                 self.focusState = (self.focusState ?? 0) + 1
