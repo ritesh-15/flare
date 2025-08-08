@@ -3,23 +3,22 @@ import SwiftUI
 struct WrapperContainer<Content: View>: View {
     
     var shouldShowTopNavBar: Bool = false
+    var navbarPage: NavbarPage = .onboarding
     @ViewBuilder var content: () -> Content
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 40) {
-                if shouldShowTopNavBar {
-                    TopNavBar()
-                       
-                }
-                
+        VStack {
+            if shouldShowTopNavBar {
+                TopNavBar(navbarPage: navbarPage)
+            }
+
+            ScrollView {
                 content()
             }
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, 24)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .scrollBounceBehavior(.basedOnSize)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .scrollBounceBehavior(.basedOnSize)
+        .padding(.horizontal, 24)
     }
 }
 
