@@ -14,6 +14,7 @@ final class Router: ObservableObject {
         case signin
         case signup
         case emailOrMobileAuthentication(with: AutheticationWith)
+        case otpInput
     }
     
     @Published var navigationPath = NavigationPath()
