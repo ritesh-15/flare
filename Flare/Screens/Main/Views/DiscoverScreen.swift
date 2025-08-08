@@ -16,37 +16,13 @@ struct DiscoverScreen: View {
         CardModel(name: "Jasica Parker, 23", locationDistance: 12, imageName: "onboarding-3", jobRole: "Product Manager")
     ]
     
-    @State private var dragOffset: CGSize = .zero
-    
-    private func index(of card: CardModel) -> Int {
-        cards.firstIndex(where: { $0.id == card.id }) ?? 0
-    }
-    
     var body: some View {
         WrapperContainer(shouldShowTopNavBar: true, navbarPage: .main) {
             VStack(spacing: 40) {
                 // Cards
                 ZStack {
                     ForEach(cards) { card in
-                        Card(card: card)
-                            .offset(dragOffset)
-                            .rotationEffect(.degrees(Double(dragOffset.width / 20)))
-                            .gesture(
-                                DragGesture()
-                                    .onChanged{ value in
-                                        dragOffset = value.translation
-                                    }
-                                    .onEnded{ value in
-                                        if abs(value.translation.width) > 100 {
-                                            withAnimation {
-                                                cards.removeAll {
-                                                    $0.id == card.id
-                                                }
-                                            }
-                                        }
-                                        dragOffset = .zero
-                                    }
-                            )
+                        CardView(card: card)
                     }
                 }
                 .animation(.spring(), value: cards)
