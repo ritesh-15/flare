@@ -11,6 +11,7 @@ enum NavbarPage {
 struct TopNavBar: View {
     
     @EnvironmentObject var router: Router
+    @State var showFilters: Bool = false
     var navbarPage: NavbarPage = .onboarding
 
     var body: some View {
@@ -35,10 +36,13 @@ struct TopNavBar: View {
                 Spacer()
                 
                 FIconButton(systemImagename: "line.3.horizontal.decrease.circle") {
-                    
+                    showFilters.toggle()
                 }
                 .tint(.brandPrimary)
             }
+        }
+        .sheet(isPresented: $showFilters) {
+            FiltersScreen()
         }
     }
 }
