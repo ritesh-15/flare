@@ -1,6 +1,6 @@
 import Foundation
 
-final class MobileNumberViewModel: ObservableObject {
+final class MobileOrEmailAuthenticationViewModel: ObservableObject {
  
     static let countries: [CountryModel] = [
         CountryModel(name: "+91", flag: "🇮🇳"),
@@ -11,7 +11,7 @@ final class MobileNumberViewModel: ObservableObject {
     ]
     
     @Published var selectedCountry: CountryModel?
-    @Published var mobileNumber: String = ""
+    @Published var inputText: String = ""
     
     init() {
         selectedCountry = Self.countries.first

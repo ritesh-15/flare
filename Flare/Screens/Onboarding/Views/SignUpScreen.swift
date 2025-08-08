@@ -5,91 +5,73 @@ struct SignUpScreen: View {
     @EnvironmentObject private var router: Router
     
     var body: some View {
-        VStack {
-            Image("logo")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 142, height: 142)
-            
-            VStack(spacing: 32) {
-                Text("Sign up to continue")
-                    .font(.title3)
+        WrapperContainer {
+            VStack {
+                Image("logo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 142, height: 142)
+                
+                VStack(spacing: 32) {
+                    Text("Sign up to continue")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                    
+                    FButton(action: {
+                        router.navigate(to: .emailOrMobileAuthentication(with: .email))
+                    }, text: "Continue with email")
+                    
+                    FButton(action: {
+                        router.navigate(to: .emailOrMobileAuthentication(with: .mobile))
+                    }, buttonType: .secondary, text: "Use phone number")
                     .fontWeight(.bold)
-                
-                FButton(action: {
                     
-                }, text: "Continue with email")
-                
-                FButton(action: {
-                    router.navigate(to: .mobileNumber)
-                }, buttonType: .secondary, text: "Use phone number")
-                .fontWeight(.bold)
-                
-                
-            }
-            .padding(.top, 78)
-            
-            VStack(spacing: 32) {
-                ZStack {
-                    Divider()
                     
-                    Text("or sign up with")
-                        .font(.caption)
-                        .padding(.horizontal, 22)
-                        .background(Color(.systemBackground))
                 }
+                .padding(.top, 78)
                 
-                HStack(spacing: 20) {
-                    IconButton(imageName: "facebook") {
+                VStack(spacing: 32) {
+                    ZStack {
+                        Divider()
                         
-                    }
-
-                    IconButton(imageName: "apple") {
-                        
+                        Text("or sign up with")
+                            .font(.caption)
+                            .padding(.horizontal, 22)
+                            .background(Color(.systemBackground))
                     }
                     
-                    IconButton(imageName: "google") {
+                    HStack(spacing: 20) {
+                        FIconButton(imageName: "facebook") {
+                            
+                        }
                         
+                        FIconButton(imageName: "apple") {
+                            
+                        }
+                        
+                        FIconButton(imageName: "google") {
+                            
+                        }
                     }
                 }
-            }
-            .padding(.top, 64)
-            
-            HStack(spacing: 32) {
-                FButton(action: {
-                    
-                }, buttonType: .link, text: "Term of use")
-                .font(.system(size: 14, weight: .regular))
+                .padding(.top, 64)
                 
-                FButton(action: {
+                HStack(spacing: 32) {
+                    FButton(action: {
+                        
+                    }, buttonType: .link, text: "Term of use")
+                    .font(.system(size: 14, weight: .regular))
                     
-                }, buttonType: .link, text: "Privacy policy")
-                .font(.system(size: 14, weight: .regular))
+                    FButton(action: {
+                        
+                    }, buttonType: .link, text: "Privacy policy")
+                    .font(.system(size: 14, weight: .regular))
+                }
+                .padding(.top, 76)
             }
-            .padding(.top, 76)
+            .navigationBarBackButtonHidden(true)
         }
-        .navigationBarBackButtonHidden(true)
-    }
-}
-
-struct IconButton: View {
-    
-    var imageName: String
-    var action: () -> Void
-    
-    var body: some View {
-        Button {
-            action()
-        } label: {
-            Image(imageName)
-                .resizable()
-                .frame(width: 32, height: 32)
-                .padding()
-                .overlay {
-                    RoundedRectangle(cornerRadius: 15)
-                        .stroke(Color.gray.opacity(0.15), lineWidth: 1)
-                }
-        }
+        .padding(.top, 40)
     }
 }
 

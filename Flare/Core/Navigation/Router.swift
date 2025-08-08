@@ -3,12 +3,17 @@ import SwiftUI
 
 final class Router: ObservableObject {
     
+    enum AutheticationWith: Hashable, Codable {
+        case email
+        case mobile
+    }
+    
     enum AppRoutes: Hashable, Codable {
         // Onboarding Flow
         case carousel
         case signin
         case signup
-        case mobileNumber
+        case emailOrMobileAuthentication(with: AutheticationWith)
     }
     
     @Published var navigationPath = NavigationPath()

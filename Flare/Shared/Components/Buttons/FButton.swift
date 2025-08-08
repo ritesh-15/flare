@@ -19,7 +19,7 @@ struct FButton: View {
             switch buttonType {
             case .primary:
                 Text(text)
-                    .frame(width: 300, height: 25)
+                    .frame(maxWidth: .infinity, maxHeight: 25)
                     .foregroundStyle(Color.white)
                     .padding()
                     .background(Color.brandPrimary)
@@ -27,7 +27,7 @@ struct FButton: View {
                     .fontWeight(.bold)
             case .secondary:
                 Text(text)
-                    .frame(width: 300, height: 25)
+                    .frame(maxWidth: .infinity, maxHeight: 25)
                     .padding()
                     .foregroundStyle(.brandPrimary)
                     .overlay {
@@ -46,5 +46,5 @@ struct FButton: View {
 #Preview {
     FButton(action: {
         
-    }, buttonType: .secondary, text: "Create a new account")
+    }, buttonType: .primary, text: "Create a new account")
 }

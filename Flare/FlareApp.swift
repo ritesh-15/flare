@@ -14,7 +14,7 @@ struct FlareApp: App {
                         case .carousel: OnboardingCarouselScreen()
                         case .signin: SignInScreen()
                         case .signup: SignUpScreen()
-                        case .mobileNumber: MobileNumberScreen()
+                        case .emailOrMobileAuthentication(let with): MobileOrEmailAuthenticationScreen(with: with)
                         }
                     }
             }
