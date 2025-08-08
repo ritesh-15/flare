@@ -5,7 +5,7 @@ struct SignUpScreen: View {
     @EnvironmentObject private var router: Router
     
     var body: some View {
-        WrapperContainer {
+        WrapperContainer(shouldShowTopNavBar: true) {
             VStack {
                 Image("logo")
                     .resizable()
@@ -71,7 +71,6 @@ struct SignUpScreen: View {
             }
             .navigationBarBackButtonHidden(true)
         }
-        .padding(.top, 40)
     }
 }
 

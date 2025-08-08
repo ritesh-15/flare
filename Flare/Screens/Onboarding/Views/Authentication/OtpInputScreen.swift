@@ -21,6 +21,7 @@ struct OtpInputScreen: View {
                     
                 }, buttonType: .link, text: "Send again")
             }
+            .frame(maxWidth: .infinity)
         }
         .navigationBarBackButtonHidden(true)
     }
@@ -38,12 +39,12 @@ struct OtpInputField: View {
         HStack {
             ForEach(0..<4) { index in
                 TextField("", text: $inputValues[index])
-                    .foregroundStyle(hasInputFilled(index: index) ? .white : .brandPrimary)
-                    .tint(hasInputFilled(index: index) ? .white : .brandPrimary)
+                    .foregroundStyle(hasInputFilled(index: index) ? Color(uiColor: .systemBackground) : .brandPrimary)
+                    .tint(hasInputFilled(index: index) ? Color(uiColor: .systemBackground) : .brandPrimary)
                     .frame(width: 70, height: 70)
                     .tag(index)
                     .multilineTextAlignment(.center)
-                    .background(hasInputFilled(index: index) ? .brandPrimary : .white)
+                    .background(hasInputFilled(index: index) ? .brandPrimary : Color(uiColor: .systemBackground))
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .keyboardType(.numberPad)
                     .textContentType(.oneTimeCode)
