@@ -4,6 +4,7 @@ import SwiftUI
 struct CardView: View {
     
     let card: CardModel
+    let index: Int
     @State var xOffset: CGFloat = 0
     @State var degrees: Double = 0
     
@@ -21,13 +22,15 @@ struct CardView: View {
             }
             
             VStack(alignment: .leading) {
-                Label("\(card.locationDistance) km", systemImage: "location.fill")
-                    .font(.caption)
-                    .foregroundStyle(.white)
-                    .padding(.all, 8)
-                    .background(.gray.opacity(0.3))
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .padding()
+                if index != 1 {
+                    Label("\(card.locationDistance) km", systemImage: "location.fill")
+                        .font(.caption)
+                        .foregroundStyle(.white)
+                        .padding(.all, 8)
+                        .background(.gray.opacity(0.3))
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .padding()
+                }
                 
                 Spacer()
                 
@@ -54,7 +57,7 @@ struct CardView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(width: 350, height: 450)
-        .offset(x: xOffset)
+        .offset(x: xOffset, y: index != 1 ? 20 : 0)
         .rotationEffect(.degrees(degrees))
         .animation(.snappy, value: xOffset)
         .gesture(
@@ -112,6 +115,7 @@ private extension CardView {
 
 #Preview {
     CardView(
-        card: CardModel(name: "test", locationDistance: 12, imageName: "onboarding-3", jobRole: "")
+        card: CardModel(name: "test", locationDistance: 12, imageName: "onboarding-3", jobRole: ""),
+        index: 0
     )
 }

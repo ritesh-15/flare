@@ -48,8 +48,8 @@ struct DiscoverScreen: View {
                 VStack(spacing: 40) {
                     // Cards
                     ZStack {
-                        ForEach(cards) { card in
-                            CardView(card: card)
+                        ForEach(Array(cards.enumerated()), id: \.offset) { index, card in
+                            CardView(card: card, index: index)
                         }
                     }
                     .animation(.spring(), value: cards)
