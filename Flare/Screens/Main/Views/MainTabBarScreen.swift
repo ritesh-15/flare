@@ -12,7 +12,7 @@ struct MainTabBarScreen: View {
             }
             
             Tab("Messages", systemImage: "message") {
-                
+                MessagesScreen()
             }
             
             Tab("Profile", systemImage: "person") {

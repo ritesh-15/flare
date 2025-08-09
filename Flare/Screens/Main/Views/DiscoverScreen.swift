@@ -17,45 +17,77 @@ struct DiscoverScreen: View {
     ]
     
     var body: some View {
-        WrapperContainer(shouldShowTopNavBar: true, navbarPage: .main) {
-            VStack(spacing: 40) {
-                // Cards
-                ZStack {
-                    ForEach(cards) { card in
-                        CardView(card: card)
-                    }
+        VStack(alignment: .center) {
+            HStack {
+                FIconButton(systemImagename: "chevron.left") {
+                    
                 }
-                .animation(.spring(), value: cards)
+                .tint(.brandPrimary)
                 
-                // Actions
-                HStack(alignment: .center, spacing: 20) {
+                Spacer()
+                
+                VStack {
+                    Text("Discover")
+                        .font(.title)
+                        .bold()
                     
-                    ActionIconButton(
-                        imageName: "xmark",
-                        backgroundColor: .white,
-                        imageIconColor: .orange) {
-                            
-                        }
-                    
-                    ActionIconButton(
-                        imageName: "heart.fill",
-                        backgroundColor: .brandPrimary,
-                        imageIconColor: .white,
-                        circleFrame: .init(width: 90, height: 90),
-                        imageFrame: .init(width: 32, height: 32)) {
-                            
-                        }
-                    
-                    ActionIconButton(
-                        imageName: "star.fill",
-                        backgroundColor: .white,
-                        imageIconColor: .purple) {
-                            
-                        }
+                    Text("Mumbai, Maharastra")
+                        .font(.callout)
                 }
-                .padding(.top, 24)
+                
+                Spacer()
+                
+                FIconButton(systemImagename: "line.3.horizontal.decrease.circle") {
+                    
+                }
+                .tint(.brandPrimary)
             }
+            .padding(.horizontal, 24)
+            
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 40) {
+                    // Cards
+                    ZStack {
+                        ForEach(cards) { card in
+                            CardView(card: card)
+                        }
+                    }
+                    .animation(.spring(), value: cards)
+                    
+                    // Actions
+                    HStack(alignment: .center, spacing: 20) {
+                        
+                        ActionIconButton(
+                            imageName: "xmark",
+                            backgroundColor: .white,
+                            imageIconColor: .orange) {
+                                
+                            }
+                        
+                        ActionIconButton(
+                            imageName: "heart.fill",
+                            backgroundColor: .brandPrimary,
+                            imageIconColor: .white,
+                            circleFrame: .init(width: 90, height: 90),
+                            imageFrame: .init(width: 32, height: 32)) {
+                                
+                            }
+                        
+                        ActionIconButton(
+                            imageName: "star.fill",
+                            backgroundColor: .white,
+                            imageIconColor: .purple) {
+                                
+                            }
+                    }
+                    .padding(.top, 24)
+                }
+                .frame(maxWidth: .infinity)
+            }
+            .scrollBounceBehavior(.basedOnSize)
+            .frame(maxWidth: .infinity)
         }
+        .frame(maxWidth: .infinity)
     }
 }
 

@@ -18,7 +18,7 @@ struct WrapperContainer<Content: View>: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .scrollBounceBehavior(.basedOnSize)
         }
-        .padding(.horizontal, 24)
+//        .padding(.horizontal, 24)
     }
 }
 
