@@ -8,7 +8,7 @@ struct MainTabBarScreen: View {
             }
             
             Tab("Likes", systemImage: "heart") {
-                
+                MatchesScreen()
             }
             
             Tab("Messages", systemImage: "message") {
