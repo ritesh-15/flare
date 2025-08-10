@@ -43,7 +43,7 @@ struct OnboardingCarouselScreen: View {
                             .fontWeight(.light)
                         
                         FButton(action: {
-                            router.navigate(to: .signin)
+                            router.navigate(to: .main)
                         }, buttonType: .link, text: "Sign In")
                     }
                 }

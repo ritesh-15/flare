@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MessagesScreen: View {
     
+    @EnvironmentObject var router: Router
     @State var searchText = ""
     
     var body: some View {
@@ -67,41 +68,11 @@ struct MessagesScreen: View {
                         
                         LazyVStack {
                             ForEach(1..<10) { _ in
-                                HStack {
-                                    ActivityView(shouldShowName: false, width: 48, height: 48)
-                                    
-                                    VStack(spacing: 6) {
-                                        HStack {
-                                            VStack(alignment: .leading) {
-                                                Text("Emellie")
-                                                    .font(.headline)
-                                                
-                                                Text("hey whatsapp")
-                                                    .font(.caption)
-                                            }
-                                            
-                                            Spacer()
-                                            
-                                            VStack(alignment: .trailing) {
-                                                Text("23 min")
-                                                    .font(.caption2)
-                                                    .fontWeight(.light)
-                                                
-                                                Circle()
-                                                    .fill(.brandPrimary)
-                                                    .frame(width: 16, height: 16)
-                                                    .overlay {
-                                                        Text("2")
-                                                            .foregroundStyle(.white)
-                                                            .font(.system(size: 12))
-                                                    }
-                                            }
-                                        }
-                                        
-                                        Divider()
+                               MessageView()
+                                    .onTapGesture {
+                                        router.navigate(to: MessagesRoutes
+                                            .thread)
                                     }
-                                }
-                                .padding(.horizontal, 4)
                             }
                         }
                     }
@@ -110,6 +81,48 @@ struct MessagesScreen: View {
             }.scrollBounceBehavior(.basedOnSize)
         }
         .padding(.horizontal, 24)
+        .navigationBarBackButtonHidden()
+    }
+}
+
+struct MessageView: View {
+    
+    var body: some View {
+        HStack {
+            ActivityView(shouldShowName: false, width: 48, height: 48)
+            
+            VStack(spacing: 6) {
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("Emellie")
+                            .font(.headline)
+                        
+                        Text("hey whatsapp")
+                            .font(.caption)
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .trailing) {
+                        Text("23 min")
+                            .font(.caption2)
+                            .fontWeight(.light)
+                        
+                        Circle()
+                            .fill(.brandPrimary)
+                            .frame(width: 16, height: 16)
+                            .overlay {
+                                Text("2")
+                                    .foregroundStyle(.white)
+                                    .font(.system(size: 12))
+                            }
+                    }
+                }
+                
+                Divider()
+            }
+        }
+        .padding(.horizontal, 4)
     }
 }
 

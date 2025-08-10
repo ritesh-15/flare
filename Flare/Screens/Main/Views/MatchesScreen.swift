@@ -84,6 +84,7 @@ struct MatchesScreen: View {
             .scrollBounceBehavior(.basedOnSize)
         }
         .padding(.horizontal, 24)
+        .navigationBarBackButtonHidden()
     }
 }
 

@@ -3,22 +3,14 @@ import SwiftUI
 @main
 struct FlareApp: App {
     
-    @ObservedObject private var navigationRouter = Router()
+    @StateObject private var navigationRouter = Router()
+    @State private var isLoggedIn = false
     
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $navigationRouter.navigationPath) {
                 ContentView()
-                    .navigationDestination(for: Router.AppRoutes.self) { path in
-                        switch path {
-                        case .carousel: OnboardingCarouselScreen()
-                        case .signin: SignInScreen()
-                        case .signup: SignUpScreen()
-                        case .emailOrMobileAuthentication(let with): MobileOrEmailAuthenticationScreen(with: with)
-                        case .otpInput: OtpInputScreen()
-                        case .profileDetails: ProfileDetailsScreen()
-                        }
-                    }
+                    .navigationDestination(for: AppRoutes.self) { $0.destination }
             }
             .environmentObject(navigationRouter)
         }

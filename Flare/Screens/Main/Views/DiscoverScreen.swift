@@ -87,6 +87,7 @@ struct DiscoverScreen: View {
             .scrollBounceBehavior(.basedOnSize)
             .frame(maxWidth: .infinity)
         }
+        .navigationBarBackButtonHidden()
         .frame(maxWidth: .infinity)
     }
 }

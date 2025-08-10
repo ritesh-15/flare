@@ -5,7 +5,7 @@ struct MobileOrEmailAuthenticationScreen: View {
     @EnvironmentObject private var router: Router
     @ObservedObject var viewModel = MobileOrEmailAuthenticationViewModel()
     
-    var with: Router.AutheticationWith
+    var with: AutheticationWith
     
     var body: some View {
         WrapperContainer(shouldShowTopNavBar: true) {
