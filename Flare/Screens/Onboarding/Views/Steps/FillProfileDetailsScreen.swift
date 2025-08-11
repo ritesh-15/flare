@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ProfileDetailsScreen: View {
+struct FillProfileDetailsScreen: View {
     
     @State private var firstName: String = ""
     @State private var lastName: String = ""
@@ -84,8 +84,10 @@ struct ProfileDetailsScreen: View {
                     
                 }, text: "Continue")
             }
+            .padding(.top, 24)
         }
         .navigationBarBackButtonHidden(true)
+        .padding(.horizontal, 24)
         .sheet(isPresented: $shouldShowChooseBirthDateSheet) {
             VStack(alignment: .leading) {
                 DatePicker("Choose birthdate", selection: $birthDate, displayedComponents: .date)
@@ -104,5 +106,5 @@ struct ProfileDetailsScreen: View {
 }
 
 #Preview {
-    ProfileDetailsScreen()
+    FillProfileDetailsScreen()
 }

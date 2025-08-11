@@ -3,12 +3,21 @@ import SwiftUI
 
 struct OtpInputScreen: View {
     
+    @State private var timeRemaining = 60
+    @State private var timerActive = true
+    private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
     var body: some View {
         WrapperContainer(shouldShowTopNavBar: true) {
             VStack(spacing: 48) {
                 VStack(alignment: .center, spacing: 8) {
-                    Text("00:43")
+                    Text("00:\(String(format: "%02d", timeRemaining))")
                         .font(.system(size: 34, weight: .bold))
+                        .onReceive(timer) { _ in
+                            if timerActive && timeRemaining > 0 {
+                                timeRemaining -= 1
+                            }
+                        }
                     
                     Text("Type the verification code we have sent to you")
                         .font(.system(size: 18, weight: .regular))
@@ -20,9 +29,12 @@ struct OtpInputScreen: View {
                 FButton(action: {
                     
                 }, buttonType: .link, text: "Send again")
+                .disabled(timeRemaining > 0)
             }
+            .padding(.top, 24)
             .frame(maxWidth: .infinity)
         }
+        .padding(.horizontal, 24)
         .navigationBarBackButtonHidden(true)
     }
 }
@@ -59,8 +71,7 @@ struct OtpInputField: View {
                             if index == numberOfFields - 1 {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                     self.focusState = nil
-                                    // Navigate to profile details screen
-                                    router.navigate(to: .profileDetails)
+                                    router.navigate(to: .setNewPassword)
                                 }
                             } else {
                                 self.focusState = (self.focusState ?? 0) + 1
@@ -85,7 +96,7 @@ struct OtpInputField: View {
         guard let focusState else {
             return false
         }
-    
+        
         return focusState > index && !inputValues[index].isEmpty
     }
 }

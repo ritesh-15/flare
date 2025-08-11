@@ -8,7 +8,18 @@ struct MobileOrEmailAuthenticationScreen: View {
     var with: AutheticationWith
     
     var body: some View {
-        WrapperContainer(shouldShowTopNavBar: true) {
+        VStack {
+            VStack(alignment: .leading) {
+                HStack(alignment: .center) {
+                    FIconButton(systemImagename: "chevron.left") {
+                        router.navigateBack()
+                    }
+                    .tint(.brandPrimary)
+                    
+                    Spacer()
+                }
+            }
+
             VStack(alignment: .leading, spacing: 8) {
                 Text(with == .mobile ? "My Mobile" : "Email address")
                     .font(.system(size: 34, weight: .bold))
@@ -77,11 +88,13 @@ struct MobileOrEmailAuthenticationScreen: View {
                 Spacer()
             }
             .frame(maxHeight: .infinity)
-            .navigationBarBackButtonHidden(true)
+            .padding(.top, 24)
             .onAppear {
                 viewModel.selectedCountry = MobileOrEmailAuthenticationViewModel.countries.first
             }
         }
+        .padding(.horizontal, 24)
+        .navigationBarBackButtonHidden(true)
     }
 }
 

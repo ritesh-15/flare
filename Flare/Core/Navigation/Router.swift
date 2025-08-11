@@ -71,7 +71,8 @@ enum AppRoutes: Hashable, Codable {
     case signup
     case emailOrMobileAuthentication(with: AutheticationWith)
     case otpInput
-    case profileDetails
+    case fillProfileDetails
+    case setNewPassword
     case main
     
     @ViewBuilder
@@ -87,10 +88,12 @@ enum AppRoutes: Hashable, Codable {
             MobileOrEmailAuthenticationScreen(with: with)
         case .otpInput:
             OtpInputScreen()
-        case .profileDetails:
-            ProfileDetailsScreen()
+        case .fillProfileDetails:
+            FillProfileDetailsScreen()
         case .main:
             MainTabBarScreen()
+        case .setNewPassword:
+            SetNewPasswordScreen()
         }
     }
 }
