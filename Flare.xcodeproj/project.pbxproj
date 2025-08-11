@@ -6,13 +6,30 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F7F22D842E49AFDB00FCC3C0 /* Appwrite in Frameworks */ = {isa = PBXBuildFile; productRef = F7F22D832E49AFDB00FCC3C0 /* Appwrite */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		F75CF7C22E44CF34006DDF5B /* Flare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F7F22D892E49B1AB00FCC3C0 /* Exceptions for "Flare" folder in "Flare" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F75CF7C12E44CF34006DDF5B /* Flare */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F75CF7C42E44CF34006DDF5B /* Flare */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F7F22D892E49B1AB00FCC3C0 /* Exceptions for "Flare" folder in "Flare" target */,
+			);
 			path = Flare;
 			sourceTree = "<group>";
 		};
@@ -23,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7F22D842E49AFDB00FCC3C0 /* Appwrite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +83,7 @@
 			);
 			name = Flare;
 			packageProductDependencies = (
+				F7F22D832E49AFDB00FCC3C0 /* Appwrite */,
 			);
 			productName = Flare;
 			productReference = F75CF7C22E44CF34006DDF5B /* Flare.app */;
@@ -94,6 +113,9 @@
 			);
 			mainGroup = F75CF7B92E44CF34006DDF5B;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F7F22D822E49AFDB00FCC3C0 /* XCRemoteSwiftPackageReference "sdk-for-apple" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F75CF7C32E44CF34006DDF5B /* Products */;
 			projectDirPath = "";
@@ -253,6 +275,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Flare/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -280,6 +303,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Flare/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -320,6 +344,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F7F22D822E49AFDB00FCC3C0 /* XCRemoteSwiftPackageReference "sdk-for-apple" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/appwrite/sdk-for-apple";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F7F22D832E49AFDB00FCC3C0 /* Appwrite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7F22D822E49AFDB00FCC3C0 /* XCRemoteSwiftPackageReference "sdk-for-apple" */;
+			productName = Appwrite;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F75CF7BA2E44CF34006DDF5B /* Project object */;
 }
