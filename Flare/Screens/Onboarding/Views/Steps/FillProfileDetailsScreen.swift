@@ -1,11 +1,11 @@
 import SwiftUI
+import PhotosUI
 
 struct FillProfileDetailsScreen: View {
     
-    @State private var firstName: String = ""
-    @State private var lastName: String = ""
-    @State private var birthDate: Date = Date()
-    @State private var shouldShowChooseBirthDateSheet: Bool = false
+    @StateObject private var viewModel = FillProfileDetailsViewModel(
+        storageService: StorageService()
+    )
     
     var body: some View {
         WrapperContainer(shouldShowTopNavBar: true) {
@@ -17,30 +17,10 @@ struct FillProfileDetailsScreen: View {
                     Text("Please choose your best pictures and fill up your profile details")
                 }
                 
-                LazyVGrid(columns: [
-                    GridItem(.flexible()),
-                    GridItem(.flexible()),
-                    GridItem(.flexible())
-                ], spacing: 12) {
-                    ForEach(1..<7) {_ in
-                        HStack {
-                            Image(systemName: "photo")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 22, height: 22)
-                                .foregroundStyle(.gray.opacity(0.5))
-                        }
-                        .padding(.horizontal, 12)
-                        .frame(maxWidth: .infinity, minHeight: 80)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(.gray.opacity(0.15), lineWidth: 1)
-                        }
-                    }
-                }
+                SelectImagesView(viewModel: viewModel)
                 
                 VStack(spacing: 12) {
-                    TextField("First Name", text: $firstName)
+                    TextField("First Name", text: $viewModel.firstName)
                         .keyboardType(.emailAddress)
                         .textContentType(.emailAddress)
                         .tint(.brandPrimary)
@@ -50,7 +30,7 @@ struct FillProfileDetailsScreen: View {
                                 .stroke(Color.gray.opacity(0.15), lineWidth: 1)
                         }
                     
-                    TextField("Last Name", text: $lastName)
+                    TextField("Last Name", text: $viewModel.lastName)
                         .keyboardType(.emailAddress)
                         .textContentType(.emailAddress)
                         .tint(.brandPrimary)
@@ -61,7 +41,7 @@ struct FillProfileDetailsScreen: View {
                         }
                     
                     Button {
-                        shouldShowChooseBirthDateSheet.toggle()
+                        viewModel.chooseBirthdate()
                     } label: {
                         Image(systemName: "calendar")
                             .resizable()
@@ -70,37 +50,89 @@ struct FillProfileDetailsScreen: View {
                             .foregroundStyle(.brandPrimary)
                             .frame(width: 24, height: 24)
                         
-                        Text("Choose birth date")
+                        Text(viewModel.isBirthDateChoosen ? "\(viewModel.getFormattedDate())" : "Choose birth date")
                             .tint(.brandPrimary)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(.brandPrimary.opacity(0.1))
                     .clipShape(RoundedRectangle(cornerRadius: 15))
-
-                }
-
-                FButton(action: {
                     
+                }
+                
+                FButton(action: {
+                    viewModel.fillProfileDetails()
                 }, text: "Continue")
             }
             .padding(.top, 24)
         }
         .navigationBarBackButtonHidden(true)
         .padding(.horizontal, 24)
-        .sheet(isPresented: $shouldShowChooseBirthDateSheet) {
+        .sheet(isPresented: $viewModel.shouldShowChooseBirthDateSheet) {
             VStack(alignment: .leading) {
-                DatePicker("Choose birthdate", selection: $birthDate, displayedComponents: .date)
+                DatePicker(
+                    "Choose birthdate",
+                    selection: $viewModel.birthDate,
+                    in: ...Date(),
+                    displayedComponents: .date)
                     .datePickerStyle(.graphical)
                     .pickerStyle(.inline)
                     .tint(.brandPrimary)
                 
                 FButton(action: {
-                    shouldShowChooseBirthDateSheet.toggle()
+                    viewModel.saveBirthDate()
                 }, text: "Save")
             }
             .padding(.horizontal, 40)
             .presentationDetents([.medium])
+        }
+        .toastView(toast: $viewModel.toast)
+    }
+}
+
+struct SelectImagesView: View {
+    
+    @ObservedObject var viewModel: FillProfileDetailsViewModel
+    var cellSize: CGFloat = (UIScreen.main.bounds.width - (24 * 4)) / 3
+    
+    var body: some View {
+        LazyVGrid(columns: [
+            GridItem(.flexible(), spacing: 12),
+            GridItem(.flexible(), spacing: 12),
+            GridItem(.flexible(), spacing: 12)
+        ], spacing: 12) {
+            ForEach(0..<6) { index in
+                PhotosPicker(
+                    selection: Binding(get: {
+                        return nil
+                    }, set: { item in
+                        if let item {
+                            viewModel.loadImage(from: item, into: index)
+                        }
+                    }), photoLibrary: .shared()) {
+                        ZStack {
+                            if let uiImage = viewModel.images[index] {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: cellSize, height: cellSize)
+                                    .clipped()
+                                    .cornerRadius(15)
+                            } else {
+                                Image(systemName: "photo")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 22, height: 22)
+                                    .foregroundStyle(.gray.opacity(0.5))
+                            }
+                        }
+                        .frame(width: cellSize, height: cellSize)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(.gray.opacity(0.15), lineWidth: 1)
+                        }
+                    }
+            }
         }
     }
 }

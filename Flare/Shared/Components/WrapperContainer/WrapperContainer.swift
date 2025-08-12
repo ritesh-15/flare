@@ -1,5 +1,6 @@
 import SwiftUI
 
+// @Deprecated
 struct WrapperContainer<Content: View>: View {
     
     var shouldShowTopNavBar: Bool = false
@@ -12,13 +13,12 @@ struct WrapperContainer<Content: View>: View {
                 TopNavBar(navbarPage: navbarPage)
             }
 
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 content()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .scrollBounceBehavior(.basedOnSize)
         }
-//        .padding(.horizontal, 24)
     }
 }
 
