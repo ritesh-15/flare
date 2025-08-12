@@ -7,9 +7,10 @@ struct OnboardingCarouselScreen: View {
     
     var body: some View {
         VStack {
+            // Image carousel
             TabView(selection: $viewModel.currentSelectedIndex) {
-                ForEach(0..<viewModel.carouselItems.count, id: \.self) { index in
-                    Image(viewModel.carouselItems[index].imageName)
+                ForEach(0..<OnboardingCarouselViewModel.carouselItems.count, id: \.self) { index in
+                    Image(OnboardingCarouselViewModel.carouselItems[index].imageName)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 370, height: 450)
@@ -22,17 +23,19 @@ struct OnboardingCarouselScreen: View {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
             
+            // Carousel text
             VStack(alignment: .center, spacing: 10) {
-                Text(viewModel.carouselItems[viewModel.currentSelectedIndex].title)
+                Text(OnboardingCarouselViewModel.carouselItems[viewModel.currentSelectedIndex].title)
                     .font(.system(size: 24, weight: .bold))
                     .foregroundStyle(Color.brandPrimary)
                 
-                Text(viewModel.carouselItems[viewModel.currentSelectedIndex].description)
+                Text(OnboardingCarouselViewModel.carouselItems[viewModel.currentSelectedIndex].description)
                     .multilineTextAlignment(.center)
                     .font(.system(size: 14, weight: .regular))
             }
             .padding(.top, 22)
             
+            // Action buttons
             VStack(spacing: 20) {
                 FButton(action: {
                     router.navigate(to: .signup)

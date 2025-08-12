@@ -2,9 +2,8 @@ import SwiftUI
 
 struct SetNewPasswordScreen: View {
     
-    @EnvironmentObject var router: Router
-    @State var password: String = ""
-    @State var confirmPassword: String = ""
+    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @EnvironmentObject private var router: Router
     
     var body: some View {
         VStack {
@@ -32,7 +31,7 @@ struct SetNewPasswordScreen: View {
                     }
                     
                     VStack(spacing: 12) {
-                        SecureField("Password", text: $password)
+                        SecureField("Password", text: $viewModel.password)
                             .textContentType(.password)
                             .tint(.brandPrimary)
                             .padding()
@@ -41,7 +40,7 @@ struct SetNewPasswordScreen: View {
                                     .stroke(Color.gray.opacity(0.15), lineWidth: 1)
                             }
 
-                        SecureField("Confirm password", text: $confirmPassword)
+                        SecureField("Confirm password", text: $viewModel.confirmPassword)
                             .textContentType(.password)
                             .tint(.brandPrimary)
                             .padding()
@@ -51,7 +50,7 @@ struct SetNewPasswordScreen: View {
                             }
                         
                         FButton(action: {
-                            router.navigate(to: .fillProfileDetails)
+                            viewModel.canGoToProfileDetailScreen()
                         }, text: "Continue")
                     }
                     .padding(.top, 40)
@@ -62,6 +61,7 @@ struct SetNewPasswordScreen: View {
         }
         .padding(.horizontal, 24)
         .navigationBarBackButtonHidden()
+        .toastView(toast: $viewModel.toast)
     }
 }
 

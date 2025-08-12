@@ -2,9 +2,9 @@ import Foundation
 
 class OnboardingCarouselViewModel: ObservableObject {
     
-    @Published var currentSelectedIndex: Int = 0
+    // MARK: - Static fields
     
-    @Published var carouselItems = [
+    static let carouselItems = [
         CarouselItemModel(imageName: "onboarding-1",
                           title: "Algorithm",
                           description: "Users going through a vetting process to ensure you never match with bots."),
@@ -15,4 +15,8 @@ class OnboardingCarouselViewModel: ObservableObject {
                           title: "Premium",
                           description: "Sign up today and enjoy the first month of premium benefits on us."),
     ]
+    
+    // MARK: - States
+
+    @Published var currentSelectedIndex: Int = 0
 }

@@ -1,12 +1,12 @@
 import SwiftUI
 
 struct MobileOrEmailAuthenticationScreen: View {
-    
+
+    @EnvironmentObject private var viewModel: OnboardingViewModel
     @EnvironmentObject private var router: Router
-    @ObservedObject var viewModel = MobileOrEmailAuthenticationViewModel()
     
     var with: AutheticationWith
-    
+
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
@@ -80,7 +80,9 @@ struct MobileOrEmailAuthenticationScreen: View {
                     }
                     
                     FButton(action: {
-                        router.navigate(to: .otpInput)
+                        if viewModel.canGoToOtpInputScreen(authenticationWith: with) {
+                            router.navigate(to: .otpInput)
+                        }
                     }, text: "Continue")
                 }
                 .padding(.top, 32)
@@ -95,6 +97,7 @@ struct MobileOrEmailAuthenticationScreen: View {
         }
         .padding(.horizontal, 24)
         .navigationBarBackButtonHidden(true)
+        .toastView(toast: $viewModel.toast)
     }
 }
 

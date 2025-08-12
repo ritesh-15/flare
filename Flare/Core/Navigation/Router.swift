@@ -8,7 +8,7 @@ enum AppTab: Hashable, Codable {
     case profile
 }
 
-enum AutheticationWith: Hashable, Codable {
+enum AutheticationWith: Hashable, Codable, Sendable {
     case email
     case mobile
 }
