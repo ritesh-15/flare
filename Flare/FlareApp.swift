@@ -18,7 +18,7 @@ struct FlareApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $navigationRouter.navigationPath) {
-                ContentView()
+                RootView()
                     .navigationDestination(for: AppRoutes.self) { $0.destination }
             }
             .environmentObject(navigationRouter)

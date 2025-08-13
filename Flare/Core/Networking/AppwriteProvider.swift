@@ -5,6 +5,7 @@ final class AppwriteProvider {
     
     static let shared = AppwriteProvider()
     static let endpoint = "http://localhost/v1"
+    static let databaseID = "68997691000466f9b1ed"
     
     // TODO: Add Project ID from the config
     static let projectId = "689973be001b6ef08c25"

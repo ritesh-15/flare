@@ -5,6 +5,8 @@ import SwiftUI
 @MainActor
 final class StorageService {
     
+    static let bucketID = "689ae14700002c5d39cd"
+    
     func upload(multiple images: [UIImage]) async throws -> [File] {
         return try await withThrowingTaskGroup(of: File.self) { group in
             for image in images {
@@ -12,7 +14,7 @@ final class StorageService {
                     let imageData = image.jpegData(compressionQuality: 0.8)!
                     let inputFile = InputFile.fromData(imageData, filename: UUID().uuidString + ".jpg", mimeType: "image/jpeg")
                     return try await AppwriteProvider.shared.storage.createFile(
-                        bucketId: "689ae14700002c5d39cd",
+                        bucketId: Self.bucketID,
                         fileId: ID.unique(),
                         file: inputFile)
                 }
@@ -25,5 +27,9 @@ final class StorageService {
 
             return uploadedFiles
         }
+    }
+    
+    func getFilePath(file: File) -> String {
+        return "/storage/buckets/\(Self.bucketID)/files/\(file.id)/view?project=\(AppwriteProvider.projectId)"
     }
 }

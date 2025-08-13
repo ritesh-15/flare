@@ -4,7 +4,10 @@ import PhotosUI
 struct FillProfileDetailsScreen: View {
     
     @StateObject private var viewModel = FillProfileDetailsViewModel(
-        storageService: StorageService()
+        storageService: StorageService(),
+        profilePictureService: ProfileImagesService(),
+        profileService: ProfileService(),
+        authenticationService: AuthenticationService()
     )
     
     var body: some View {

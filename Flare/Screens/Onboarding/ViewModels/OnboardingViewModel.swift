@@ -49,6 +49,7 @@ final class OnboardingViewModel: ObservableObject, Sendable {
         return true
     }
     
+    @MainActor
     func canGoToProfileDetailScreen() {
         guard validatePasswordAndConfirmPassword() else {
             return
@@ -57,9 +58,11 @@ final class OnboardingViewModel: ObservableObject, Sendable {
         Task {
             do {
                 let _ = try await authService.createAccount(email: inputText, password: password)
-                DispatchQueue.main.async { [weak self] in
-                    self?.router.navigate(to: .fillProfileDetails)
-                }
+
+                // Create session
+                let _ = try await authService.login(email: inputText, password: password)
+
+                router.navigate(to: .fillProfileDetails)
             } catch let error {
                 toast = Toast(style: .error, message: "Something weng wrong, please try again")
                 print("[ERROR] \(error.localizedDescription)")

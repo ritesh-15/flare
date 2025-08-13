@@ -24,15 +24,25 @@ final class FillProfileDetailsViewModel: ObservableObject {
     
     private var cancelables: [AnyCancellable] = []
     private let storageService: StorageService
+    private let profilePictureService: ProfileImagesService
+    private let profileService: ProfileService
+    private let authenticationService: AuthenticationService
     
     // MARK: - Initializer
     
-    init(storageService: StorageService) {
+    init(storageService: StorageService,
+         profilePictureService: ProfileImagesService,
+         profileService: ProfileService,
+         authenticationService: AuthenticationService) {
         self.storageService = storageService
+        self.profileService = profileService
+        self.profilePictureService = profilePictureService
+        self.authenticationService = authenticationService
     }
     
     // MARK: - Public methods
     
+    @MainActor
     func fillProfileDetails() {
         // Validate if first name, lastname, birth date and images choosen
         guard validateFirstnameAndLastname(),
@@ -42,11 +52,33 @@ final class FillProfileDetailsViewModel: ObservableObject {
         }
        
         Task {
-            // Upload images
             do {
+                // Upload images
                 let uploadImages = images.compactMap { $0 }
                 let files = try await storageService.upload(multiple: uploadImages)
-                print("[DEBUG] \(files)")
+                
+                let profilePictureURls: [String] = files.compactMap { file in
+                    return storageService.getFilePath(file: file)
+                }
+
+                // Create Profile Pictures
+                let profilePictures = try await profilePictureService.createProfileImages(imageURLs: profilePictureURls)
+
+                // Get currently logged in user
+                let user = try await authenticationService.getCurrentUser()
+                
+                print("[DEBUG] user: \(try? user.toJson())")
+                
+                // Create Profile
+                let profile = try await profileService.createProfile(
+                    firstName: firstName,
+                    lastName: lastName,
+                    birthDate: birthDate,
+                    profilePicture: profilePictures.compactMap { picture  in
+                        picture.id},
+                    userId: user.id)
+                
+                print("[DEBUG] \(try? profile.toJson())")
             } catch let error {
                 print("[ERROR] \(error.localizedDescription)")
                 toast = Toast(style: .error, message: "Failed to upload the profile images, please try again 🙈")

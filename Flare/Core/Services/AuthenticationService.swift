@@ -11,4 +11,16 @@ final class AuthenticationService: Sendable {
             password: password)
         return user
     }
+    
+    func login(email: String, password: String) async throws -> AppwriteModels.Session {
+        let session = try await AppwriteProvider.shared.account.createEmailPasswordSession(
+            email: email,
+            password: password)
+        return session
+    }
+    
+    func getCurrentUser() async throws -> AppwriteModels.User<[String: AnyCodable]> {
+        let user = try await AppwriteProvider.shared.account.get()
+        return user
+    }
 }
