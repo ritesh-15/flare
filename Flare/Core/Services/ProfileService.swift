@@ -30,4 +30,46 @@ final class ProfileService {
         return profile
     }
     
+    func getProfiles() async throws -> [ProfileCardModel] {
+        let profiles = try await AppwriteProvider.shared.database.listDocuments(
+            databaseId: AppwriteProvider.databaseID,
+            collectionId: Self.collectionID)
+        
+        // Transform the data
+        let transformedData =  profiles.documents.compactMap { document -> ProfileCardModel? in
+            let data = document.data
+    
+            guard let firstName = data["firstName"]?.value as? String,
+                  let lastName = data["lastName"]?.value as? String,
+                  let position = data["position"]?.value as? String,
+                  let gender = data["gender"]?.value as? String,
+                  let profilePictures = transformProfilePictures(profilePictures: data["profilePictures"]) else {
+                return nil
+            }
+
+            return ProfileCardModel(
+                firstName: firstName,
+                lastName: lastName,
+                position: position,
+                gender: Gender(rawValue: gender) ?? .female,
+                birthDate: Date(),
+                profilePictures: profilePictures,
+                interests: [],
+                userId: "")
+        }
+        
+        return transformedData
+    }
+    
+    // MARK: - Private Helpers
+    
+    private func transformProfilePictures(profilePictures: AnyCodable?) -> [String]? {
+        guard let pictures = profilePictures?.value as? [[String: Any]] else {
+            return nil
+        }
+        
+        return pictures.compactMap { pic in
+            pic["imageUrl"] as? String
+        }
+    }
 }

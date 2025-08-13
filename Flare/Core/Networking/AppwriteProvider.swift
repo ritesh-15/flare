@@ -19,6 +19,7 @@ final class AppwriteProvider {
         self.client = Client()
             .setEndpoint(Self.endpoint)
             .setProject(Self.projectId)
+            .addHeader(key: "Accept-Encoding", value: "identity")
         
         self.account = Account(client)
         self.database = Databases(client)

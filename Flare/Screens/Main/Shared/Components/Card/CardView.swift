@@ -3,27 +3,43 @@ import SwiftUI
 
 struct CardView: View {
     
-    let card: CardModel
+    let card: ProfileCardModel
     let index: Int
     @State var xOffset: CGFloat = 0
     @State var degrees: Double = 0
+    @ObservedObject var viewModel: DiscoverViewModel
+    
+    var topPictureURL: String {
+        guard card.profilePictures.count > 0 else {
+            return ""
+        }
+        
+        return card.profilePictures.first ?? ""
+    }
     
     var body: some View {
         ZStack {
             ZStack {
-                Image(card.imageName)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 350, height: 450)
-                    .clipShape(RoundedRectangle(cornerRadius: 15))
-                    .clipped()
+                AsyncImage(url: URL(string: topPictureURL)) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 350, height: 450)
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                        .clipped()
+                } placeholder: {
+                    Rectangle()
+                        .fill(.gray.opacity(0.1))
+                        .frame(width: 350, height: 450)
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                }
                 
                 SwipeActionIndicatorView(xoffset: $xOffset, screenCutoff: screenCutoff)
             }
             
             VStack(alignment: .leading) {
                 if index != 1 {
-                    Label("\(card.locationDistance) km", systemImage: "location.fill")
+                    Label("12 km", systemImage: "location.fill")
                         .font(.caption)
                         .foregroundStyle(.white)
                         .padding(.all, 8)
@@ -41,12 +57,12 @@ struct CardView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                     
                     VStack(alignment: .leading) {
-                        Text(card.name)
+                        Text(card.firstName)
                             .font(.title2)
                             .bold()
                             .foregroundStyle(.white)
                         
-                        Text(card.jobRole)
+                        Text(card.position)
                             .font(.caption)
                             .foregroundStyle(.white)
                     }
@@ -85,18 +101,22 @@ private extension CardView {
         }
         
         if width > screenCutoff {
-            // Swipe right
-            xOffset = 500
-            degrees = 12
-            
-            // TODO: Remove from the list
+            withAnimation {
+                // Swipe right
+                xOffset = 500
+                degrees = 12
+            } completion: {
+                viewModel.swipeRight(card: card, index: index)
+            }
+
         } else {
-            
-            // Swipe left
-            xOffset = -500
-            degrees = -12
-            
-            // TODO: Remove from the list
+            withAnimation {
+                // Swipe left
+                xOffset = -500
+                degrees = -12
+            } completion: {
+                viewModel.swipeLeft(card: card, index: index)
+            }
         }
     }
     
@@ -115,7 +135,16 @@ private extension CardView {
 
 #Preview {
     CardView(
-        card: CardModel(name: "test", locationDistance: 12, imageName: "onboarding-3", jobRole: ""),
-        index: 0
+        card: ProfileCardModel(
+            firstName: "Ritesh",
+            lastName: "Khore",
+            position: "Software engineer",
+            gender: .male,
+            birthDate: Date(),
+            profilePictures: [],
+            interests: [],
+            userId: ""),
+        index: 0,
+        viewModel: DiscoverViewModel(profileService: ProfileService())
     )
 }
