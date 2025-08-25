@@ -29,7 +29,7 @@ struct CardView: View {
                         .clipped()
                 } placeholder: {
                     Rectangle()
-                        .fill(.gray.opacity(0.1))
+                        .fill(.gray)
                         .frame(width: 350, height: 450)
                         .clipShape(RoundedRectangle(cornerRadius: 15))
                 }
@@ -136,6 +136,7 @@ private extension CardView {
 #Preview {
     CardView(
         card: ProfileCardModel(
+            id: "dfdfdfer",
             firstName: "Ritesh",
             lastName: "Khore",
             position: "Software engineer",
@@ -145,6 +146,6 @@ private extension CardView {
             interests: [],
             userId: ""),
         index: 0,
-        viewModel: DiscoverViewModel(profileService: ProfileService())
+        viewModel: DiscoverViewModel(profileService: ProfileService(), matchService: MatchService())
     )
 }

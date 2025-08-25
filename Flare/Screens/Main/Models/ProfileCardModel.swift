@@ -18,7 +18,7 @@ enum Gender: String, Codable {
 }
 
 struct ProfileCardModel: Identifiable, Equatable {
-    let id = UUID().uuidString
+    let id: String
     let firstName: String
     let lastName: String
     let position: String

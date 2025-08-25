@@ -10,7 +10,9 @@ struct CardModel: Identifiable, Equatable {
 
 struct DiscoverScreen: View {
     
-    @StateObject private var viewModel = DiscoverViewModel(profileService: ProfileService())
+    @StateObject private var viewModel = DiscoverViewModel(
+        profileService: ProfileService(),
+        matchService: MatchService())
     
     var body: some View {
         VStack(alignment: .center) {
