@@ -66,9 +66,7 @@ final class FillProfileDetailsViewModel: ObservableObject {
 
                 // Get currently logged in user
                 let user = try await authenticationService.getCurrentUser()
-                
-                print("[DEBUG] user: \(try? user.toJson())")
-                
+
                 // Create Profile
                 let profile = try await profileService.createProfile(
                     firstName: firstName,
@@ -77,8 +75,6 @@ final class FillProfileDetailsViewModel: ObservableObject {
                     profilePicture: profilePictures.compactMap { picture  in
                         picture.id},
                     userId: user.id)
-                
-                print("[DEBUG] \(try? profile.toJson())")
             } catch let error {
                 print("[ERROR] \(error.localizedDescription)")
                 toast = Toast(style: .error, message: "Failed to upload the profile images, please try again 🙈")

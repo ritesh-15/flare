@@ -45,7 +45,7 @@ final class ProfileService {
         // Transform the data
         let transformedData =  profiles.documents.compactMap { document -> ProfileCardModel? in
             let data = document.data
-            return transformProfile(data: data)
+            return Self.transformProfile(data: data)
         }
         
         return transformedData
@@ -60,22 +60,20 @@ final class ProfileService {
             ])
         
         guard let profile = profiles.documents.first,
-              let transformedData = transformProfile(data: profile.data) else {
+              let transformedData = Self.transformProfile(data: profile.data) else {
             throw CustomError.notFound("Profile not found with userId: \(userId) or failed to transform the data")
         }
         
         return transformedData
     }
-    
-    // MARK: - Private Helpers
-    
-    private func transformProfile(data: [String: AnyCodable]) -> ProfileCardModel? {
+        
+    static func transformProfile(data: [String: AnyCodable]) -> ProfileCardModel? {
         guard let firstName = data["firstName"]?.value as? String,
               let id = data["$id"]?.value as? String,
               let lastName = data["lastName"]?.value as? String,
               let position = data["position"]?.value as? String,
               let gender = data["gender"]?.value as? String,
-              let profilePictures = transformProfilePictures(profilePictures: data["profilePictures"]) else {
+              let profilePictures = Self.transformProfilePictures(profilePictures: data["profilePictures"]) else {
             return nil
         }
 
@@ -91,9 +89,33 @@ final class ProfileService {
             userId: "")
     }
     
-    private func transformProfilePictures(profilePictures: AnyCodable?) -> [String]? {
-        guard let pictures = profilePictures?.value as? [[String: Any]] else {
+    static func transformProfile(data: [String: Any]) -> ProfileCardModel? {
+        print("[DEBUG] \(type(of: data["profilePictures"] ))")
+        
+        guard let firstName = data["firstName"] as? String,
+              let id = data["$id"] as? String,
+              let lastName = data["lastName"] as? String,
+              let position = data["position"] as? String,
+              let gender = data["gender"] as? String,
+              let profilePictures = Self.transformProfilePictures(profilePictures: AnyCodable(data["profilePictures"] as Any)) else {
             return nil
+        }
+
+        return ProfileCardModel(
+            id: id,
+            firstName: firstName,
+            lastName: lastName,
+            position: position,
+            gender: Gender(rawValue: gender) ?? .female,
+            birthDate: Date(),
+            profilePictures: profilePictures,
+            interests: [],
+            userId: "")
+    }
+    
+    static func transformProfilePictures(profilePictures: AnyCodable?) -> [String]? {
+        guard let pictures = profilePictures?.value as? [[String: Any]] else {
+            return []
         }
         
         return pictures.compactMap { pic in

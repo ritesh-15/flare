@@ -5,6 +5,7 @@ struct RootView: View {
     @State private var isUserLoggedIn = false
     @State private var isLoading = true
     @AppStorage("userId") private var userId: String?
+    @AppStorage("profileId") private var profileId: String?
 
     var body: some View {
         Group {
@@ -26,9 +27,13 @@ extension RootView {
     
     func authenticate() async {
         let authService = AuthenticationService()
+        let profileService = ProfileService()
+        
         do {
             let user = try await authService.getCurrentUser()
+            let profile = try await profileService.getProfileByUserId(userId: user.id)
             userId = user.id
+            profileId = profile.id
             isUserLoggedIn = true
         } catch let error {
             isUserLoggedIn = false
