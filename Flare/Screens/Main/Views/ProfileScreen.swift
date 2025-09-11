@@ -2,17 +2,27 @@ import SwiftUI
 
 struct ProfileScreen: View {
     
+    let profileId: String
     @EnvironmentObject var router: Router
+    @ObservedObject private var viewModel = ProfileDetailViewModel(profileService: ProfileService())
     
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack {
                 ZStack(alignment: .topLeading) {
-                    Image("onboarding-2")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: UIScreen.main.bounds.width, height: 410)
-                        .clipped()
+                    AsyncImage(url: URL(string: viewModel.profile?.profilePictures.first ?? "")) { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: UIScreen.main.bounds.width, height: 410)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                            .clipped()
+                    } placeholder: {
+                        Rectangle()
+                            .fill(.gray)
+                            .frame(width: UIScreen.main.bounds.width, height: 410)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                    }
                     
                     FIconButton(systemImagename: "chevron.left") {
                         router.navigateBack()
@@ -54,10 +64,10 @@ struct ProfileScreen: View {
                     // Name and profession detail
                     HStack {
                         VStack(alignment: .leading, spacing: 5) {
-                            Text("Jessica Parker, 24")
+                            Text("\(viewModel.getFullName()), \(viewModel.getAge())")
                                 .font(.system(size: 24, weight: .bold))
                             
-                            Text("Professional Model")
+                            Text("\(viewModel.profile?.position ?? "")")
                                 .font(.system(size: 14, weight: .regular))
                         }
                         
@@ -75,7 +85,7 @@ struct ProfileScreen: View {
                             Text("Location")
                                 .font(.system(size: 16, weight: .bold))
                             
-                            Text("Mumbai, Maharastra")
+                            Text("\(viewModel.profile?.location ?? "")")
                                 .font(.system(size: 14, weight: .regular))
                         }
                         
@@ -84,7 +94,7 @@ struct ProfileScreen: View {
                         HStack(alignment: .center, spacing: 8) {
                             Image(systemName: "location")
                             
-                            Text("1 Km")
+                            Text("\(viewModel.profile?.distance ?? 0) Km")
                                 .font(.system(size: 12, weight: .bold))
                         }
                         .padding(8)
@@ -98,33 +108,43 @@ struct ProfileScreen: View {
                         Text("About")
                             .font(.system(size: 16, weight: .bold))
                         
-                        Text("My name is Jessica Parker and I enjoy meeting new people and finding ways to help them have an uplifting experience. I enjoy reading..")
+                        Text("\(viewModel.profile?.about ?? "")")
                             .font(.system(size: 14, weight: .regular))
                     }
                     
                     // Interestes
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("Interests")
-                            .font(.system(size: 16, weight: .bold))
-                            .padding(.bottom, 10)
-                        
-                        LazyVGrid(columns: [
-                            GridItem(.adaptive(minimum: 100, maximum: 150))
-                        ], spacing: 8) {
-                            ForEach(1..<5) { _ in
-                                Text("Music")
-                                    .font(.system(size: 14))
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 6)
-                                    .overlay {
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .stroke(.gray.opacity(0.3), lineWidth: 1)
-                                    }
-                            }
-                        }
-                    }
-                    
+//                    VStack(alignment: .leading, spacing: 5) {
+//                        Text("Interests")
+//                            .font(.system(size: 16, weight: .bold))
+//                            .padding(.bottom, 10)
+//                        
+//                        LazyVGrid(columns: [
+//                            GridItem(.adaptive(minimum: 100, maximum: 150))
+//                        ], spacing: 8) {
+//                            if let profile = viewModel.profile {
+//                                ForEach(profile.interests, id: \.id) { interest in
+//                                    HStack(alignment: .center, spacing: 4) {
+//                                        Image(systemName: interest.systemImage)
+//                                            .resizable()
+//                                            .aspectRatio(contentMode: .fit)
+//                                            .frame(width: 14, height: 14)
+//                                            .clipped()
+//                                        
+//                                        Text("\(interest.name)")
+//                                            .font(.system(size: 14))
+//                                            .frame(maxWidth: .infinity)
+//                                            .padding(.horizontal, 12)
+//                                    }
+//                                    padding(.vertical, 6)
+//                                    .overlay {
+//                                        RoundedRectangle(cornerRadius: 8)
+//                                            .stroke(.gray.opacity(0.3), lineWidth: 1)
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                    
                     // Gallary
                     VStack {
                         HStack(alignment: .center) {
@@ -142,17 +162,27 @@ struct ProfileScreen: View {
                         
                         LazyVGrid(columns: [
                             GridItem(.flexible(), spacing: 8),
-                                    GridItem(.flexible(), spacing: 8)
+                            GridItem(.flexible(), spacing: 8)
                         ], spacing: 8) {
-                            ForEach(1..<5) { index in
-                                let isLarge = index % 3 == 0
-                                
-                                Image("onboarding-2")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(height: isLarge ? 190 : 140)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                                    .clipped()
+                            if let pictures = viewModel.profile?.profilePictures {
+                                ForEach(pictures, id: \.self) { picture in
+                                    GeometryReader { geo in
+                                        AsyncImage(url: URL(string: picture)) { image in
+                                            image
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: geo.size.width, height: 190)
+                                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                                                .clipped()
+                                        } placeholder: {
+                                            Rectangle()
+                                                .fill(.gray)
+                                                .frame(width: geo.size.width, height: 190)
+                                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                                        }
+                                    }
+                                    .frame(height: 190)
+                                }
                             }
                         }
                     }
@@ -162,9 +192,13 @@ struct ProfileScreen: View {
             }
         }
         .ignoresSafeArea()
+        .task {
+            viewModel.fetchProfile(profileId: profileId)
+        }
+        .navigationBarBackButtonHidden()
     }
 }
 
 #Preview {
-    ProfileScreen()
+    ProfileScreen(profileId: "")
 }

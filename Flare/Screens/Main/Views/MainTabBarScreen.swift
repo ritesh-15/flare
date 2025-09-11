@@ -19,7 +19,7 @@ struct MainTabBarScreen: View {
             }
             
             Tab("Profile", systemImage: "person") {
-                ProfileScreen()
+                Text("Edit Profile")
             }
         }
         .background(.gray)

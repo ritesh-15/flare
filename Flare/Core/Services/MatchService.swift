@@ -29,7 +29,7 @@ final class MatchService: MatchServiceProtocol {
         
         return match
     }
-    
+
     func getMatches(userId: String) async throws -> [MatchModel] {
         let matches = try await AppwriteProvider.shared.database.listDocuments(
             databaseId: AppwriteProvider.databaseID,
@@ -58,7 +58,7 @@ final class MatchService: MatchServiceProtocol {
                 "status": MatchStatus.unmatch.rawValue
             ])
     }
-    
+
     func match(matchId: String) async throws {
         let _ = try await AppwriteProvider.shared.database.updateDocument(
             databaseId: AppwriteProvider.databaseID,
@@ -67,6 +67,8 @@ final class MatchService: MatchServiceProtocol {
             data: [
                 "status": MatchStatus.match.rawValue
             ])
+        
+        // Show match screen
     }
     
     // MARK: - Private methods

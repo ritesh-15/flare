@@ -74,6 +74,7 @@ enum AppRoutes: Hashable, Codable {
     case fillProfileDetails
     case setNewPassword
     case main
+    case profileDetail(profileId: String)
     
     @ViewBuilder
     var destination: some View {
@@ -94,6 +95,8 @@ enum AppRoutes: Hashable, Codable {
             MainTabBarScreen()
         case .setNewPassword:
             SetNewPasswordScreen()
+        case .profileDetail(let profileId):
+            ProfileScreen(profileId: profileId)
         }
     }
 }

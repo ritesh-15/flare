@@ -66,6 +66,19 @@ final class ProfileService {
         
         return transformedData
     }
+    
+    func getProfileByID(profileId: String) async throws -> ProfileCardModel {
+        let profile = try await AppwriteProvider.shared.database.getDocument(
+            databaseId: AppwriteProvider.databaseID,
+            collectionId: Self.collectionID,
+            documentId: profileId)
+        
+        guard let transformedData = Self.transformProfile(data: profile.data) else {
+            throw CustomError.notFound("Profile not found with profileId: \(profileId) or failed to transform the data")
+        }
+        
+        return transformedData
+    }
         
     static func transformProfile(data: [String: AnyCodable]) -> ProfileCardModel? {
         guard let firstName = data["firstName"]?.value as? String,
@@ -73,9 +86,18 @@ final class ProfileService {
               let lastName = data["lastName"]?.value as? String,
               let position = data["position"]?.value as? String,
               let gender = data["gender"]?.value as? String,
-              let profilePictures = Self.transformProfilePictures(profilePictures: data["profilePictures"]) else {
+              let birthDate = data["birthDate"]?.value as? String,
+              let profilePictures = Self.transformProfilePictures(profilePictures: data["profilePictures"]),
+              let interests = Self.transformInterests(interests: data["interests"]) else {
             return nil
         }
+
+        let about = data["about"]?.value as? String
+        let location = data["location"]?.value as? String
+        let distance = data["distance"]?.value as? Int
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
 
         return ProfileCardModel(
             id: id,
@@ -83,23 +105,33 @@ final class ProfileService {
             lastName: lastName,
             position: position,
             gender: Gender(rawValue: gender) ?? .female,
-            birthDate: Date(),
+            birthDate: formatter.date(from: birthDate) ?? Date(),
             profilePictures: profilePictures,
             interests: [],
-            userId: "")
+            userId: "",
+            location: location,
+            distance: distance,
+            about: about)
     }
     
     static func transformProfile(data: [String: Any]) -> ProfileCardModel? {
-        print("[DEBUG] \(type(of: data["profilePictures"] ))")
-        
         guard let firstName = data["firstName"] as? String,
               let id = data["$id"] as? String,
               let lastName = data["lastName"] as? String,
               let position = data["position"] as? String,
               let gender = data["gender"] as? String,
-              let profilePictures = Self.transformProfilePictures(profilePictures: AnyCodable(data["profilePictures"] as Any)) else {
+              let birthDate = data["birthDate"] as? String,
+              let profilePictures = Self.transformProfilePictures(profilePictures: AnyCodable(data["profilePictures"] as Any)),
+              let interests = Self.transformInterests(interests: AnyCodable(data["interests"] as Any)) else {
             return nil
         }
+
+        let about = data["about"] as? String
+        let location = data["location"] as? String
+        let distance = data["distance"] as? Int
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
 
         return ProfileCardModel(
             id: id,
@@ -107,10 +139,13 @@ final class ProfileService {
             lastName: lastName,
             position: position,
             gender: Gender(rawValue: gender) ?? .female,
-            birthDate: Date(),
+            birthDate: formatter.date(from: birthDate) ?? Date(),
             profilePictures: profilePictures,
             interests: [],
-            userId: "")
+            userId: "",
+            location: location,
+            distance: distance,
+            about: about)
     }
     
     static func transformProfilePictures(profilePictures: AnyCodable?) -> [String]? {
@@ -120,6 +155,21 @@ final class ProfileService {
         
         return pictures.compactMap { pic in
             pic["imageUrl"] as? String
+        }
+    }
+    
+    static func transformInterests(interests: AnyCodable?) -> [Interest]? {
+        guard let interests = interests?.value as? [[String: Any]] else {
+            return []
+        }
+        
+        return interests.compactMap { interest in
+            if let systemImage = interest["systemImageName"] as? String,
+               let name = interest["name"] as? String {
+                return Interest(name: name, systemImage: systemImage)
+            } else {
+                return nil
+            }
         }
     }
 }

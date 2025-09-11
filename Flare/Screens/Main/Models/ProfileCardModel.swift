@@ -17,7 +17,13 @@ enum Gender: String, Codable {
     }
 }
 
-struct ProfileCardModel: Identifiable, Equatable {
+struct Interest: Equatable, Identifiable, Hashable {
+    let id: String = UUID().uuidString
+    let name: String
+    let systemImage: String
+}
+
+struct ProfileCardModel: Identifiable, Equatable, Hashable {
     let id: String
     let firstName: String
     let lastName: String
@@ -25,6 +31,9 @@ struct ProfileCardModel: Identifiable, Equatable {
     let gender: Gender
     let birthDate: Date
     let profilePictures: [String]
-    let interests: [String]
+    let interests: [Interest]
     let userId: String
+    let location: String?
+    let distance: Int?
+    let about: String?
 }

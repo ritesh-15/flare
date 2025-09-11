@@ -41,6 +41,9 @@ struct MatchesScreen: View {
         }
         .padding(.horizontal, 24)
         .navigationBarBackButtonHidden()
+        .refreshable {
+            viewModel.fetchMatches()
+        }
     }
 }
 

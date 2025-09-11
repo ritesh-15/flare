@@ -46,9 +46,7 @@ final class MatchesViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Private methods
-    
-    private func fetchMatches() {
+    func fetchMatches() {
         guard let profileId else {
             return
         }

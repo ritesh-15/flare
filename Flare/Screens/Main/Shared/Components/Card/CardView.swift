@@ -8,6 +8,7 @@ struct CardView: View {
     @State var xOffset: CGFloat = 0
     @State var degrees: Double = 0
     @ObservedObject var viewModel: DiscoverViewModel
+    @EnvironmentObject var router: Router
     
     var topPictureURL: String {
         guard card.profilePictures.count > 0 else {
@@ -85,6 +86,9 @@ struct CardView: View {
                     onDragEnded(value)
                 }
         )
+        .onTapGesture {
+            router.navigate(to: .profileDetail(profileId: card.id))
+        }
     }
 }
 
@@ -144,7 +148,10 @@ private extension CardView {
             birthDate: Date(),
             profilePictures: [],
             interests: [],
-            userId: ""),
+            userId: "",
+            location: "",
+            distance: 1,
+            about: ""),
         index: 0,
         viewModel: DiscoverViewModel(profileService: ProfileService(), matchService: MatchService())
     )

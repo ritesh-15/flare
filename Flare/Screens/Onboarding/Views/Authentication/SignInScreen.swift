@@ -2,10 +2,11 @@ import SwiftUI
 
 struct SignInScreen: View {
     
+    @StateObject var viewModel = SignInViewModel()
     @EnvironmentObject var router: Router
     @State var emailAddress: String = ""
     @State var password: String = ""
-    
+
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
@@ -52,7 +53,7 @@ struct SignInScreen: View {
                             }
                         
                         FButton(action: {
-                            
+                            viewModel.login(email: emailAddress, password: password)
                         }, text: "Sign In")
                     }
                     .padding(.top, 40)
@@ -72,6 +73,10 @@ struct SignInScreen: View {
         }
         .padding(.horizontal, 24)
         .navigationBarBackButtonHidden()
+        .toastView(toast: $viewModel.toast)
+        .onAppear {
+            viewModel.router = router
+        }
     }
 }
 
