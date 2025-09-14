@@ -96,7 +96,7 @@ enum AppRoutes: Hashable, Codable {
         case .setNewPassword:
             SetNewPasswordScreen()
         case .profileDetail(let profileId):
-            ProfileScreen(profileId: profileId)
+            ProfileScreen(profileId: profileId, isSelfProfile: false)
         }
     }
 }

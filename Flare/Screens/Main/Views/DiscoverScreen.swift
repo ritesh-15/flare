@@ -97,6 +97,9 @@ struct DiscoverScreen: View {
         }
         .navigationBarBackButtonHidden()
         .frame(maxWidth: .infinity)
+        .refreshable {
+            viewModel.getProfiles()
+        }
     }
 }
 
@@ -114,7 +117,7 @@ struct EmptyCardsView: View {
                     .fontWeight(.regular)
                     .multilineTextAlignment(.center)
             }
-            .frame(maxWidth: .infinity, maxHeight: UIScreen.main.bounds.height)
+            .frame(maxWidth: .infinity)
             .padding(.horizontal, 24)
         }
     }

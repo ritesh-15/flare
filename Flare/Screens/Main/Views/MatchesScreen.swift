@@ -51,11 +51,35 @@ struct MatchCard: View {
     
     var match: MatchModel
     @ObservedObject var viewModel: MatchesViewModel
-    
+
+    func getImage() -> String {
+        guard let profileId = viewModel.profileId else {
+            return ""
+        }
+
+        if profileId == match.matchTo.id {
+            return match.matchBy.profilePictures.first ?? ""
+        }
+
+        return match.matchTo.profilePictures.first ?? ""
+    }
+
+    func getName() -> String {
+        guard let profileId = viewModel.profileId else {
+            return ""
+        }
+
+        if profileId == match.matchTo.id {
+            return match.matchBy.firstName
+        }
+
+        return match.matchTo.firstName
+    }
+
     var body: some View {
         ZStack(alignment: .bottom) {
             
-            AsyncImage(url: URL(string: match.matchTo.profilePictures.first ?? "")) { image in
+            AsyncImage(url: URL(string: getImage())) { image in
                 image
                     .resizable()
                     .scaledToFill()
@@ -92,7 +116,7 @@ struct MatchCard: View {
             }
             
             VStack(alignment: .center, spacing: 8) {
-                Text("\(match.matchTo.firstName), \(23)")
+                Text("\(getName()), \(23)")
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(.white)
                     .padding(.horizontal)

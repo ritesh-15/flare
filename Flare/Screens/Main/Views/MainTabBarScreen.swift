@@ -3,7 +3,8 @@ import SwiftUI
 struct MainTabBarScreen: View {
     
     @EnvironmentObject var router: Router
-    
+    @AppStorage("profileId") private var profileId: String?
+
     var body: some View {
         TabView {
             Tab("Discover", systemImage: "waveform") {
@@ -19,7 +20,7 @@ struct MainTabBarScreen: View {
             }
             
             Tab("Profile", systemImage: "person") {
-                Text("Edit Profile")
+                ProfileScreen(profileId: profileId ?? "", isSelfProfile: true)
             }
         }
         .background(.gray)

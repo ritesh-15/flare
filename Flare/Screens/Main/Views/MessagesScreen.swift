@@ -1,10 +1,24 @@
 import SwiftUI
 
+struct MessageActivity: Identifiable {
+    let id = UUID().uuidString
+    let image: String
+
+    static let activites: [MessageActivity] = [
+        MessageActivity(image: "onboarding-1"),
+        MessageActivity(image: "onboarding-2"),
+        MessageActivity(image: "onboarding-3"),
+        MessageActivity(image: "onboarding-2"),
+        MessageActivity(image: "onboarding-1"),
+        MessageActivity(image: "onboarding-3"),
+    ]
+}
+
 struct MessagesScreen: View {
     
     @EnvironmentObject var router: Router
     @State var searchText = ""
-    
+
     var body: some View {
         VStack {
             VStack {
@@ -51,8 +65,8 @@ struct MessagesScreen: View {
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(alignment: .center) {
-                                ForEach(1..<10) { index in
-                                    ActivityView()
+                                ForEach(MessageActivity.activites) { activity in
+                                    ActivityView(image: activity.image)
                                 }
                             }
                             .padding(.horizontal, 4)
@@ -89,7 +103,7 @@ struct MessageView: View {
     
     var body: some View {
         HStack {
-            ActivityView(shouldShowName: false, width: 48, height: 48)
+            ActivityView(image: "onboarding-2", shouldShowName: false, width: 48, height: 48)
             
             VStack(spacing: 6) {
                 HStack {
@@ -127,7 +141,9 @@ struct MessageView: View {
 }
 
 struct ActivityView: View {
-    
+
+    let image: String?
+
     var shouldShowName: Bool = true
     var width: CGFloat = 64
     var height: CGFloat = 64
@@ -145,7 +161,7 @@ struct ActivityView: View {
                 )
                 .frame(width: width + 8, height: height + 8)
                 .overlay(
-                    Image("onboarding-3")
+                    Image(image ?? "onboarding-2")
                         .resizable()
                         .scaledToFill()
                         .frame(width: width, height: height)

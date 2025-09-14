@@ -12,7 +12,7 @@ struct RootView: View {
             if isLoading {
                 ProgressView()
             } else if isUserLoggedIn {
-                MainTabBarScreen()
+                MatchScreen()
             } else {
                 OnboardingCarouselScreen()
             }

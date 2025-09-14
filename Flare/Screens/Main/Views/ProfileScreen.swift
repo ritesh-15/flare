@@ -3,6 +3,7 @@ import SwiftUI
 struct ProfileScreen: View {
     
     let profileId: String
+    let isSelfProfile: Bool
     @EnvironmentObject var router: Router
     @ObservedObject private var viewModel = ProfileDetailViewModel(profileService: ProfileService())
     
@@ -24,43 +25,56 @@ struct ProfileScreen: View {
                             .clipShape(RoundedRectangle(cornerRadius: 15))
                     }
                     
-                    FIconButton(systemImagename: "chevron.left") {
-                        router.navigateBack()
+                    if !isSelfProfile {
+                        FIconButton(systemImagename: "chevron.left") {
+                            router.navigateBack()
+                        }
+                        .tint(.white)
+                        .padding(.top, 64)
+                        .padding(.leading, 24)
                     }
-                    .tint(.white)
-                    .padding(.top, 64)
-                    .padding(.leading, 24)
                 }
                 .frame(maxWidth: UIScreen.main.bounds.width)
                 .overlay(alignment: .bottom) {
-                    HStack(alignment: .center, spacing: 20) {
-                        ActionIconButton(
-                            imageName: "xmark",
-                            backgroundColor: .white,
-                            imageIconColor: .orange) {
-                                
-                            }
-                        
-                        ActionIconButton(
-                            imageName: "heart.fill",
-                            backgroundColor: .brandPrimary,
-                            imageIconColor: .white,
-                            circleFrame: .init(width: 90, height: 90),
-                            imageFrame: .init(width: 32, height: 32)) {
-                                
-                            }
-                        
-                        ActionIconButton(
-                            imageName: "star.fill",
-                            backgroundColor: .white,
-                            imageIconColor: .purple) {
-                                
-                            }
+                    if !isSelfProfile {
+                        HStack(alignment: .center, spacing: 20) {
+                            ActionIconButton(
+                                imageName: "xmark",
+                                backgroundColor: .white,
+                                imageIconColor: .orange) {
+
+                                }
+
+                            ActionIconButton(
+                                imageName: "heart.fill",
+                                backgroundColor: .brandPrimary,
+                                imageIconColor: .white,
+                                circleFrame: .init(width: 90, height: 90),
+                                imageFrame: .init(width: 32, height: 32)) {
+
+                                }
+
+                            ActionIconButton(
+                                imageName: "star.fill",
+                                backgroundColor: .white,
+                                imageIconColor: .purple) {
+
+                                }
+                        }
+                        .offset(y: 44)
+                    } else {
+                        HStack(alignment: .center, spacing: 20) {
+                            FButton(action: {
+
+                            }, text: "Edit profile")
+                            .frame(width: 250, height: 25)
+                        }
+                        .padding(.horizontal, 32)
+                        .offset(y: 18)
                     }
-                    .offset(y: 44)
                 }
                 
-                VStack(spacing: 30) {
+                VStack(alignment: .leading, spacing: 30) {
                     // Name and profession detail
                     HStack {
                         VStack(alignment: .leading, spacing: 5) {
@@ -200,5 +214,5 @@ struct ProfileScreen: View {
 }
 
 #Preview {
-    ProfileScreen(profileId: "")
+    ProfileScreen(profileId: "", isSelfProfile: false)
 }
