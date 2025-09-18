@@ -14,7 +14,9 @@ final class MatchesViewModel: ObservableObject {
     
     @Published var matches: [MatchModel] = []
     @Published var isFetching = true
-    
+
+    var router: Router?
+
     @AppStorage("profileId") var profileId: String?
     
     init(matchService: MatchServiceProtocol) {
@@ -35,11 +37,12 @@ final class MatchesViewModel: ObservableObject {
         }
     }
 
-    func match(matchId: String) {
+    func match(matchId: String, matchToImageURL: String, matchByImageURL: String) {
         Task {
             do {
                 try await matchService.match(matchId: matchId)
                 fetchMatches()
+                router?.navigate(to: .matchFound(matchToImageURL: matchToImageURL, matchByImageURL: matchByImageURL))
             } catch let error {
                 print("[ERROR] \(error.localizedDescription)")
             }

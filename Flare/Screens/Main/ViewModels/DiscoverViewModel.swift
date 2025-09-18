@@ -15,7 +15,8 @@ final class DiscoverViewModel: ObservableObject {
     
     @Published var cards: [ProfileCardModel] = []
     @Published var isFetching = true
-    
+    @Published var showFilters: Bool = false
+
     // MARK: - Initializer
     
     init(profileService: ProfileService, matchService: MatchServiceProtocol) {
@@ -25,7 +26,11 @@ final class DiscoverViewModel: ObservableObject {
     }
     
     // MARK: - Public methods
-    
+
+    func toggleFilter() {
+        showFilters.toggle()
+    }
+
     func swipeRight(card: ProfileCardModel, index: Int) {
         guard let userId else {
             return

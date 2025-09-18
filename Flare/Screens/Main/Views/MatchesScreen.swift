@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct MatchesScreen: View {
-    
+
+    @EnvironmentObject var router: Router
     @StateObject private var viewModel = MatchesViewModel(matchService: MatchService())
     
     var body: some View {
@@ -43,6 +44,9 @@ struct MatchesScreen: View {
         .navigationBarBackButtonHidden()
         .refreshable {
             viewModel.fetchMatches()
+        }
+        .onAppear {
+            viewModel.router = router
         }
     }
 }
@@ -151,7 +155,10 @@ struct MatchCard: View {
                                     .bold()
                                     .frame(width: 20, height: 20)
                                     .onTapGesture {
-                                        viewModel.match(matchId: match.id)
+                                        viewModel.match(
+                                            matchId: match.id,
+                                            matchToImageURL: match.matchTo.profilePictures.first ?? "",
+                                            matchByImageURL: match.matchBy.profilePictures.first ?? "")
                                     }
                                 
                                 Spacer()

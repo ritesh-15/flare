@@ -75,7 +75,8 @@ enum AppRoutes: Hashable, Codable {
     case setNewPassword
     case main
     case profileDetail(profileId: String)
-    
+    case matchFound(matchToImageURL: String, matchByImageURL: String)
+
     @ViewBuilder
     var destination: some View {
         switch self {
@@ -97,6 +98,8 @@ enum AppRoutes: Hashable, Codable {
             SetNewPasswordScreen()
         case .profileDetail(let profileId):
             ProfileScreen(profileId: profileId, isSelfProfile: false)
+        case .matchFound(let matchToImageURL, let matchByImageURL):
+            MatchScreen(matchByImageURL: matchToImageURL, matchToImageURL: matchByImageURL)
         }
     }
 }

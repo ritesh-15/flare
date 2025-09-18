@@ -9,7 +9,7 @@ struct CardModel: Identifiable, Equatable {
 }
 
 struct DiscoverScreen: View {
-    
+
     @StateObject private var viewModel = DiscoverViewModel(
         profileService: ProfileService(),
         matchService: MatchService())
@@ -37,7 +37,7 @@ struct DiscoverScreen: View {
                 Spacer()
                 
                 FIconButton(systemImagename: "line.3.horizontal.decrease.circle") {
-                    
+                    viewModel.toggleFilter()
                 }
                 .tint(.brandPrimary)
             }
@@ -99,6 +99,9 @@ struct DiscoverScreen: View {
         .frame(maxWidth: .infinity)
         .refreshable {
             viewModel.getProfiles()
+        }
+        .sheet(isPresented: $viewModel.showFilters) {
+            FiltersScreen()
         }
     }
 }
