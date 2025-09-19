@@ -84,18 +84,17 @@ final class ProfileService {
         guard let firstName = data["firstName"]?.value as? String,
               let id = data["$id"]?.value as? String,
               let lastName = data["lastName"]?.value as? String,
-              let position = data["position"]?.value as? String,
-              let gender = data["gender"]?.value as? String,
               let birthDate = data["birthDate"]?.value as? String,
-              let profilePictures = Self.transformProfilePictures(profilePictures: data["profilePictures"]),
-              let interests = Self.transformInterests(interests: data["interests"]) else {
+              let profilePictures = Self.transformProfilePictures(profilePictures: data["profilePictures"]) else {
             return nil
         }
 
-        let about = data["about"]?.value as? String
-        let location = data["location"]?.value as? String
-        let distance = data["distance"]?.value as? Int
-        
+        let about = data["about"]?.value as? String ?? ""
+        let location = data["location"]?.value as? String ?? ""
+        let distance = data["distance"]?.value as? Int ?? 0
+        let position = data["position"]?.value as? String ?? ""
+        let gender = data["gender"]?.value as? String ?? "other"
+
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
 
@@ -103,8 +102,8 @@ final class ProfileService {
             id: id,
             firstName: firstName,
             lastName: lastName,
-            position: position,
-            gender: Gender(rawValue: gender) ?? .female,
+            position: position ?? "",
+            gender: Gender(rawValue: gender) ?? .other,
             birthDate: formatter.date(from: birthDate) ?? Date(),
             profilePictures: profilePictures,
             interests: [],
@@ -118,18 +117,17 @@ final class ProfileService {
         guard let firstName = data["firstName"] as? String,
               let id = data["$id"] as? String,
               let lastName = data["lastName"] as? String,
-              let position = data["position"] as? String,
-              let gender = data["gender"] as? String,
               let birthDate = data["birthDate"] as? String,
-              let profilePictures = Self.transformProfilePictures(profilePictures: AnyCodable(data["profilePictures"] as Any)),
-              let interests = Self.transformInterests(interests: AnyCodable(data["interests"] as Any)) else {
+              let profilePictures = Self.transformProfilePictures(profilePictures: AnyCodable(data["profilePictures"] as Any)) else {
             return nil
         }
 
         let about = data["about"] as? String
         let location = data["location"] as? String
         let distance = data["distance"] as? Int
-        
+        let position = data["position"] as? String ?? ""
+        let gender = data["gender"] as? String ?? "other"
+
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
 

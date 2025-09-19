@@ -15,7 +15,7 @@ final class ProfileImagesService {
                         collectionId: Self.collectionID,
                         documentId: ID.unique(),
                         data: [
-                            "imageUrl": url
+                            "imageUrl": "http://localhost/v1/\(url)"
                         ]
                     )
                 }

@@ -31,6 +31,7 @@ extension RootView {
         
         do {
             let user = try await authService.getCurrentUser()
+            print("[DEBUG] \(user.id)")
             let profile = try await profileService.getProfileByUserId(userId: user.id)
             userId = user.id
             profileId = profile.id

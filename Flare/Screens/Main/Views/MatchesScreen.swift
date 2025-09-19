@@ -29,12 +29,24 @@ struct MatchesScreen: View {
             }
             
             ScrollView(showsIndicators: false) {
-                LazyVGrid(columns: [
-                    GridItem(.flexible()),
-                    GridItem(.flexible())
-                ], spacing: 12) {
-                    ForEach(viewModel.matches) { match in
-                        MatchCard(match: match, viewModel: viewModel)
+                if viewModel.matches.count == 0 {
+                    VStack(spacing: 12) {
+                        Image("no_matches")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 240, height: 340)
+                            .clipped()
+
+                        Text("You don't have any matches right now!")
+                    }
+                } else {
+                    LazyVGrid(columns: [
+                        GridItem(.flexible()),
+                        GridItem(.flexible())
+                    ], spacing: 12) {
+                        ForEach(viewModel.matches) { match in
+                            MatchCard(match: match, viewModel: viewModel)
+                        }
                     }
                 }
             }

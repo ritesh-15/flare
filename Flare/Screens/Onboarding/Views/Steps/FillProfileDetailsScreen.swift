@@ -2,7 +2,9 @@ import SwiftUI
 import PhotosUI
 
 struct FillProfileDetailsScreen: View {
-    
+
+    @EnvironmentObject var router: Router
+
     @StateObject private var viewModel = FillProfileDetailsViewModel(
         storageService: StorageService(),
         profilePictureService: ProfileImagesService(),
@@ -90,6 +92,9 @@ struct FillProfileDetailsScreen: View {
             .presentationDetents([.medium])
         }
         .toastView(toast: $viewModel.toast)
+        .onAppear {
+            viewModel.router = router
+        }
     }
 }
 

@@ -4,7 +4,11 @@ import PhotosUI
 import SwiftUI
 
 final class FillProfileDetailsViewModel: ObservableObject {
-    
+
+    var router: Router?
+    @AppStorage("userId") private var userId: String?
+    @AppStorage("profileId") private var profileId: String?
+
     // MARK: - Observed properties
     
     @Published var firstName = ""
@@ -75,12 +79,15 @@ final class FillProfileDetailsViewModel: ObservableObject {
                     profilePicture: profilePictures.compactMap { picture  in
                         picture.id},
                     userId: user.id)
+
+                userId = user.id
+                profileId = profile.id
+
+                router?.navigate(to: .main)
             } catch let error {
                 print("[ERROR] \(error.localizedDescription)")
                 toast = Toast(style: .error, message: "Failed to upload the profile images, please try again 🙈")
             }
-            
-            // Create profile with details
         }
     }
     

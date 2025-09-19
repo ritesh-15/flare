@@ -73,6 +73,7 @@ struct MobileOrEmailAuthenticationScreen: View {
                             .textContentType(.emailAddress)
                             .tint(.brandPrimary)
                             .padding()
+                            .textCase(.lowercase)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 12)
                                     .stroke(Color.gray.opacity(0.15), lineWidth: 1)

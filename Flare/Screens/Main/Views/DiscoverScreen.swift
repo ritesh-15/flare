@@ -60,34 +60,6 @@ struct DiscoverScreen: View {
                             }
                         }
                         .animation(.spring(), value: viewModel.cards)
-                        
-                        // Actions
-                        HStack(alignment: .center, spacing: 20) {
-                            
-                            ActionIconButton(
-                                imageName: "xmark",
-                                backgroundColor: .white,
-                                imageIconColor: .orange) {
-                                    
-                                }
-                            
-                            ActionIconButton(
-                                imageName: "heart.fill",
-                                backgroundColor: .brandPrimary,
-                                imageIconColor: .white,
-                                circleFrame: .init(width: 90, height: 90),
-                                imageFrame: .init(width: 32, height: 32)) {
-                                    
-                                }
-                            
-                            ActionIconButton(
-                                imageName: "star.fill",
-                                backgroundColor: .white,
-                                imageIconColor: .purple) {
-                                    
-                                }
-                        }
-                        .padding(.top, 24)
                     }
                     .frame(maxWidth: .infinity)
                 }
@@ -111,6 +83,11 @@ struct EmptyCardsView: View {
     var body: some View {
         ZStack {
             VStack(alignment: .center, spacing: 8) {
+                Image("find_more")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 230, height: 440)
+
                 Text("You're All Caught Up!")
                     .font(.title)
                     .bold()

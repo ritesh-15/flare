@@ -5,7 +5,8 @@ struct FiltersScreen: View {
     @State var gender: String = ""
     @State var location: String = ""
     @State private var range: Double = 0
-    
+    @State private var age: Double = 0
+
     let genders = ["Male", "Female", "Other"]
     
     var body: some View {
@@ -77,7 +78,7 @@ struct FiltersScreen: View {
                                 .font(.caption)
                         }
                         
-                        Slider(value: $range, in: 0...100)
+                        Slider(value: $age, in: 18...100)
                             .tint(.brandPrimary)
                     }
                 }
