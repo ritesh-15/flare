@@ -19,7 +19,7 @@ final class ProfileDetailViewModel: ObservableObject {
             return ""
         }
         
-        return profile.firstName + profile.lastName
+        return "\(profile.firstName) \(profile.lastName)"
     }
     
     func getAge() -> Int {

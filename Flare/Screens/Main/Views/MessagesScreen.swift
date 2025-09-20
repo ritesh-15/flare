@@ -19,6 +19,8 @@ struct MessagesScreen: View {
     @EnvironmentObject var router: Router
     @State var searchText = ""
 
+    @StateObject var viewModel = MessagesViewModel(profileService: ProfileService())
+
     var body: some View {
         VStack {
             VStack {
@@ -65,8 +67,8 @@ struct MessagesScreen: View {
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(alignment: .center) {
-                                ForEach(MessageActivity.activites) { activity in
-                                    ActivityView(image: activity.image)
+                                ForEach(viewModel.profiles) { activity in
+                                    ActivityView(image: activity.profilePictures.first ?? "")
                                 }
                             }
                             .padding(.horizontal, 4)
@@ -81,8 +83,10 @@ struct MessagesScreen: View {
                             .bold()
                         
                         LazyVStack {
-                            ForEach(1..<10) { _ in
-                               MessageView()
+                            ForEach(viewModel.profiles) { message in
+                                MessageView(
+                                    imageURL: message.profilePictures.first ?? "",
+                                    fullName: "\(message.firstName) \(message.lastName)")
                                     .onTapGesture {
                                         router.navigate(to: MessagesRoutes
                                             .thread)
@@ -100,25 +104,28 @@ struct MessagesScreen: View {
 }
 
 struct MessageView: View {
-    
+
+    let imageURL: String
+    let fullName: String
+
     var body: some View {
         HStack {
-            ActivityView(image: "onboarding-2", shouldShowName: false, width: 48, height: 48)
-            
+            ActivityView(image: imageURL, shouldShowName: false, width: 48, height: 48)
+
             VStack(spacing: 6) {
                 HStack {
                     VStack(alignment: .leading) {
-                        Text("Emellie")
+                        Text(fullName)
                             .font(.headline)
                         
-                        Text("hey whatsapp")
+                        Text("hey there nice to see you here")
                             .font(.caption)
                     }
                     
                     Spacer()
                     
                     VStack(alignment: .trailing) {
-                        Text("23 min")
+                        Text("10 min")
                             .font(.caption2)
                             .fontWeight(.light)
                         
@@ -126,7 +133,7 @@ struct MessageView: View {
                             .fill(.brandPrimary)
                             .frame(width: 16, height: 16)
                             .overlay {
-                                Text("2")
+                                Text("4")
                                     .foregroundStyle(.white)
                                     .font(.system(size: 12))
                             }
@@ -161,11 +168,18 @@ struct ActivityView: View {
                 )
                 .frame(width: width + 8, height: height + 8)
                 .overlay(
-                    Image(image ?? "onboarding-2")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: width, height: height)
-                        .clipShape(Circle())
+                    AsyncImage(url: URL(string: image ?? "")) { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: width, height: height)
+                            .clipShape(Circle())
+                    } placeholder: {
+                        Rectangle()
+                            .fill(.gray.opacity(0.1))
+                            .frame(width: width, height: height)
+                            .clipShape(Circle())
+                    }
                 )
             
             if shouldShowName {

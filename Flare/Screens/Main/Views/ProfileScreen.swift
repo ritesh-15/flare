@@ -78,7 +78,7 @@ struct ProfileScreen: View {
                     // Name and profession detail
                     HStack {
                         VStack(alignment: .leading, spacing: 5) {
-                            Text("\(viewModel.getFullName()), \(viewModel.getAge())")
+                            Text("\(viewModel.getFullName()), 25")
                                 .font(.system(size: 24, weight: .bold))
                             
                             Text("\(viewModel.profile?.position ?? "")")

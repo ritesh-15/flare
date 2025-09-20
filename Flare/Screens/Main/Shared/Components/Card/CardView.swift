@@ -41,7 +41,7 @@ struct CardView: View {
 
                 VStack(alignment: .leading) {
                     if index != 1 {
-                        Label("12 km", systemImage: "location.fill")
+                        Label("\(card.distance ?? 30) km", systemImage: "location.fill")
                             .font(.caption)
                             .foregroundStyle(.white)
                             .padding(.all, 8)
